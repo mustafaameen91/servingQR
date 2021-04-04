@@ -35,11 +35,12 @@ app.get("/api/certificates/:file", function (request, response) {
    });
 });
 
-app.post(`/uploadCertificate`, (req, res) => {
-   let base64Data = req.body.pdf.replace(/^data:application\/pdf;base64,/, "");
+app.post(`/api/uploadQR`, (req, res) => {
+   console.log(req.body.fileName);
+   let base64Data = req.body.pdf;
 
    fs.writeFile(
-      `./certificates/${req.body.fileName}.pdf`,
+      `./certificates/${req.body.fileName}`,
       base64Data,
       "base64",
       function (err) {
@@ -47,7 +48,7 @@ app.post(`/uploadCertificate`, (req, res) => {
             res.status(500).send({
                message:
                   err.message ||
-                  "Some error occurred while creating the patient.",
+                  "Some error occurred while creating the certificate.",
             });
          } else {
             res.send({ message: "saved file" });
